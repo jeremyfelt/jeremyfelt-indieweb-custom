@@ -116,6 +116,14 @@ function set_default_post_data( $post ) {
 	return $post;
 }
 
+/**
+ * Add the URL associated with this like to the list of URLs to be
+ * pinged with a webmention.
+ *
+ * @param array $urls    List of URLs to ping.
+ * @param int   $post_id The current post ID.
+ * @return array $urls Modified list of URLs to ping.
+ */
 function filter_webmention_links( $urls, $post_id ) {
 	$post = get_post( $post_id );
 
