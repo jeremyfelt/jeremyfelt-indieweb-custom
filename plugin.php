@@ -5,7 +5,7 @@
  * Description:     A plugin to play around with IndieWeb possibilities.
  * Author:          Jeremy Felt
  * Author URI:      https://jeremyfelt.com
- * Version:         0.0.1
+ * Version:         0.0.2
  */
 
 // If this file is called directly, abort.
