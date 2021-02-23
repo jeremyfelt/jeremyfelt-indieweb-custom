@@ -11,24 +11,27 @@ add_filter( 'webmention_links', __NAMESPACE__ . '\filter_webmention_links', 10, 
  * Register the post type used to track likes.
  */
 function register_post_type() {
-	\register_post_type( 'like', array(
-		'labels' => array(
-			'name' => 'Likes',
-			'singular_name' => 'Like',
-		),
-		'public' => true,
-		'menu_position' => 6,
-		'menu_icon' => 'dashicons-star-filled',
-		'supports' => array(
-			'comments',
-			'webmentions',
-		),
-		'register_meta_box_cb' => __NAMESPACE__ . '\register_meta_boxes',
-		'has_archive' => true,
-		'rewrite' => array(
-			'slug' => 'liked',
+	\register_post_type(
+		'like',
+		array(
+			'labels'               => array(
+				'name'          => 'Likes',
+				'singular_name' => 'Like',
+			),
+			'public'               => true,
+			'menu_position'        => 6,
+			'menu_icon'            => 'dashicons-star-filled',
+			'supports'             => array(
+				'comments',
+				'webmentions',
+			),
+			'register_meta_box_cb' => __NAMESPACE__ . '\register_meta_boxes',
+			'has_archive'          => true,
+			'rewrite'              => array(
+				'slug' => 'liked',
+			),
 		)
-	) );
+	);
 }
 
 /**
@@ -46,17 +49,27 @@ function register_meta_boxes( $post ) {
  * @param WP_Post $post The current like being edited.
  */
 function display_meta_box( $post ) {
-	$url = get_post_meta( $post->ID, 'like_url', true );
+	$url   = get_post_meta( $post->ID, 'like_url', true );
 	$title = get_post_meta( $post->ID, 'like_title', true );
 	$notes = get_post_meta( $post->ID, 'like_notes', true );
 
 	wp_nonce_field( 'save-like-data', 'like_data_nonce' );
 	?>
 	<h3>URL</h3>
-	<input class="widefat" type="text" id="like-url" name="like_url" value="<?php if ( '' !== $url ) { echo esc_url( $url ); } ?>" />
+	<input class="widefat" type="text" id="like-url" name="like_url" value="
+	<?php
+	if ( '' !== $url ) {
+		echo esc_url( $url ); }
+	?>
+	" />
 
 	<h3>Title</h3>
-	<input class="widefat" type="text" id="like-title" name="like_title" value="<?php if ( '' !== $title ) { echo esc_attr( $title ); } ?>" />
+	<input class="widefat" type="text" id="like-title" name="like_title" value="
+	<?php
+	if ( '' !== $title ) {
+		echo esc_attr( $title ); }
+	?>
+	" />
 
 	<h3>Notes</h3>
 	<textarea class="widefat" rows="10" id="like-notes" name="like_notes"><?php echo esc_textarea( $notes ); ?></textarea>
@@ -84,19 +97,19 @@ function save_post( $post_id, $post ) {
 
 	if ( isset( $_POST['like_url'] ) && '' !== $_POST['like_url'] ) {
 		update_post_meta( $post_id, 'like_url', esc_url_raw( $_POST['like_url'] ) );
-	} else if ( isset( $_POST['like_url'] ) && '' === $_POST['like_url'] ) {
+	} elseif ( isset( $_POST['like_url'] ) && '' === $_POST['like_url'] ) {
 		delete_post_meta( $post_id, 'like_url' );
 	}
 
 	if ( isset( $_POST['like_title'] ) && '' !== $_POST['like_title'] ) {
 		update_post_meta( $post_id, 'like_title', sanitize_text_field( $_POST['like_title'] ) );
-	} else if ( isset( $_POST['like_title'] ) && '' === $_POST['like_title'] ) {
+	} elseif ( isset( $_POST['like_title'] ) && '' === $_POST['like_title'] ) {
 		delete_post_meta( $post_id, 'like_title' );
 	}
 
 	if ( isset( $_POST['like_notes'] ) && '' !== $_POST['like_notes'] ) {
 		update_post_meta( $post_id, 'like_notes', wp_kses_post( $_POST['like_notes'] ) );
-	} else if ( isset( $_POST['like_notes'] ) && '' === $_POST['like_notes'] ) {
+	} elseif ( isset( $_POST['like_notes'] ) && '' === $_POST['like_notes'] ) {
 		delete_post_meta( $post_id, 'like_notes' );
 	}
 }
@@ -110,7 +123,7 @@ function save_post( $post_id, $post ) {
 function set_default_post_data( $post ) {
 	if ( 'like' === $post['post_type'] && '' === $post['post_name'] && 'Auto Draft' === $post['post_title'] ) {
 		$post['post_title'] = 'Like';
-		$post['post_name'] = date( 'YmdHis' );
+		$post['post_name']  = gmdate( 'YmdHis' );
 	}
 
 	return $post;
