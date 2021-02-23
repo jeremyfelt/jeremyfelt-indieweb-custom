@@ -123,7 +123,7 @@ function save_post( $post_id, $post ) {
 function set_default_post_data( $post ) {
 	if ( 'like' === $post['post_type'] && '' === $post['post_name'] && 'Auto Draft' === $post['post_title'] ) {
 		$post['post_title'] = 'Like';
-		$post['post_name']  = date( 'YmdHis' );
+		$post['post_name']  = gmdate( 'YmdHis' );
 	}
 
 	return $post;
