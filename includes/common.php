@@ -7,6 +7,11 @@ add_action( 'init', __NAMESPACE__ . '\remove_indieweb_added_on_init', 15 );
 add_filter( 'pre_comment_approved', __NAMESPACE__ . '\set_comment_approved', 10, 2 );
 add_filter( 'webmention_comment_form', __NAMESPACE__ . '\filter_webmention_comment_form_template' );
 
+/**
+ * Remove unneeded styles and scripts added by the IndieWeb plugin(s).
+ *
+ * In these cases, the site/theme has taken care of the display layer.
+ */
 function remove_indieweb_styles() {
 	remove_action( 'wp_enqueue_scripts', array( 'IndieWeb_Plugin', 'enqueue_style' ) );
 	remove_action( 'wp_enqueue_scripts', array( 'Semantic_Linkbacks_Plugin', 'enqueue_scripts' ) );
