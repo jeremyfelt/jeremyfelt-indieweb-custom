@@ -5,6 +5,7 @@ namespace JIC\Common;
 add_action( 'plugins_loaded', __NAMESPACE__ . '\remove_indieweb_styles', 15 );
 add_action( 'init', __NAMESPACE__ . '\remove_indieweb_added_on_init', 15 );
 add_filter( 'pre_comment_approved', __NAMESPACE__ . '\set_comment_approved', 10, 2 );
+add_filter( 'webmention_comment_form', __NAMESPACE__ . '\filter_webmention_comment_form_template' );
 
 function remove_indieweb_styles() {
 	remove_action( 'wp_enqueue_scripts', array( 'IndieWeb_Plugin', 'enqueue_style' ) );
@@ -37,4 +38,17 @@ function set_comment_approved( $approved, $commentdata ) {
 	}
 
 	return $approved;
+}
+
+/**
+ * Filter the template used for the Webmention form in the comments
+ * template so that it can be overridden by the theme.
+ *
+ * @param string $template The location of the default template.
+ * @return string The location of the template in the theme (or the default).
+ */
+function filter_webmention_comment_form_template( $template ) {
+	$new_template = locate_template( 'templates/webmention-comment-form.php' );
+
+	return '' === $new_template ? $template : $new_template;
 }
