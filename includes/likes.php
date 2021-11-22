@@ -6,6 +6,7 @@ add_action( 'init', __NAMESPACE__ . '\register_post_type', 10 );
 add_action( 'save_post', __NAMESPACE__ . '\save_post', 10, 2 );
 add_filter( 'wp_insert_post_data', __NAMESPACE__ . '\set_default_post_data', 10 );
 add_filter( 'webmention_links', __NAMESPACE__ . '\filter_webmention_links', 10, 2 );
+add_filter( 'micropub_post_type', __NAMESPACE__ . '\filter_micropub_likes', 10, 2 );
 
 /**
  * Register the post type used to track likes.
@@ -149,4 +150,21 @@ function filter_webmention_links( $urls, $post_id ) {
 	}
 
 	return $urls;
+}
+
+/**
+ * Filter the post type for a like published with a micropub client.
+ *
+ * @param string $post_type The post type.
+ * @param array  $input     An array of input args.
+ * @return string The modified post type.
+ */
+function filter_micropub_likes( $post_type, $input ) {
+	$props = mp_get( $input, 'properties' );
+
+	if ( isset( $props['like-of'] ) ) {
+		return 'like';
+	}
+
+	return $post_type;
 }
