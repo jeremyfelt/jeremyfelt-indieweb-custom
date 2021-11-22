@@ -50,7 +50,7 @@ function register_meta_boxes( $post ) {
  * @param WP_Post $post The current like being edited.
  */
 function display_meta_box( $post ) {
-	$url   = get_post_meta( $post->ID, 'like_url', true );
+	$url   = get_post_meta( $post->ID, 'mf2_like-of', true );
 	$title = get_post_meta( $post->ID, 'like_title', true );
 	$notes = get_post_meta( $post->ID, 'like_notes', true );
 
@@ -97,9 +97,9 @@ function save_post( $post_id, $post ) {
 	}
 
 	if ( isset( $_POST['like_url'] ) && '' !== $_POST['like_url'] ) {
-		update_post_meta( $post_id, 'like_url', esc_url_raw( $_POST['like_url'] ) );
+		update_post_meta( $post_id, 'mf2_like-of', esc_url_raw( $_POST['like_url'] ) );
 	} elseif ( isset( $_POST['like_url'] ) && '' === $_POST['like_url'] ) {
-		delete_post_meta( $post_id, 'like_url' );
+		delete_post_meta( $post_id, 'mf2_like-of' );
 	}
 
 	if ( isset( $_POST['like_title'] ) && '' !== $_POST['like_title'] ) {
@@ -142,7 +142,7 @@ function filter_webmention_links( $urls, $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( 'like' === $post->post_type ) {
-		$url = get_post_meta( $post_id, 'like_url', true );
+		$url = get_post_meta( $post_id, 'mf2_like-of', true );
 
 		if ( '' !== $url ) {
 			$urls[] = $url;
