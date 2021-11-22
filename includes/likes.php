@@ -58,12 +58,7 @@ function display_meta_box( $post ) {
 	wp_nonce_field( 'save-like-data', 'like_data_nonce' );
 	?>
 	<h3>URL</h3>
-	<input class="widefat" type="text" id="like-url" name="like_url" value="
-	<?php
-	if ( '' !== $url ) {
-		echo esc_url( $url ); }
-	?>
-	" />
+	<input class="widefat" type="text" id="like-url" name="like_url" value="<?php echo esc_url( $url ); ?>" />
 
 	<h3>Title</h3>
 	<input class="widefat" type="text" id="like-title" name="like_title" value="
