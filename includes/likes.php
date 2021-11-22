@@ -51,6 +51,7 @@ function register_meta_boxes( $post ) {
  */
 function display_meta_box( $post ) {
 	$url   = get_post_meta( $post->ID, 'mf2_like-of', true );
+	$url   = is_array( $url ) ? array_pop( $url ) : $url;
 	$title = get_post_meta( $post->ID, 'like_title', true );
 	$notes = get_post_meta( $post->ID, 'like_notes', true );
 
@@ -143,6 +144,7 @@ function filter_webmention_links( $urls, $post_id ) {
 
 	if ( 'like' === $post->post_type ) {
 		$url = get_post_meta( $post_id, 'mf2_like-of', true );
+		$url = is_array( $url ) ? array_pop( $url ) : $url;
 
 		if ( '' !== $url ) {
 			$urls[] = $url;
