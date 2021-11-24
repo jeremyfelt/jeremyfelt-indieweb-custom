@@ -19,6 +19,10 @@ function filter_micropub_post_type( $post_type, $input ) {
 		return 'like';
 	}
 
+	if ( isset( $props['in-reply-to'] ) ) {
+		return 'shortnote';
+	}
+
 	return $post_type;
 }
 
