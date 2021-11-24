@@ -21,7 +21,8 @@ function filter_micropub_post_type( $post_type, $input ) {
 		return 'like';
 	}
 
-	if ( isset( $props['in-reply-to'] ) ) {
+	// Use Shortnotes for replies and reposts.
+	if ( isset( $props['in-reply-to'] ) || isset( $props['repost-of'] ) ) {
 		return 'shortnote';
 	}
 
