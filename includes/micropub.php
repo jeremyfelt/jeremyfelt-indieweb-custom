@@ -65,6 +65,10 @@ function filter_reply_to_metadata( $value, $post_id, $meta_key ) {
 		return $value;
 	}
 
+	if ( is_string( $reply_to ) ) {
+		return $reply_to;
+	}
+
 	if ( wp_is_numeric_array( $reply_to ) ) {
 		return $reply_to[0];
 	}
