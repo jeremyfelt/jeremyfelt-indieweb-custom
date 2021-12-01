@@ -20,11 +20,11 @@ function filter_before_micropub( $input ) {
 		$input['properties']['mp-slug'] = substr( wp_generate_uuid4(), 0, 4 ) . time();
 
 		if ( isset( $input['properties']['name'] ) ) {
-			$input['properties']['name'][0] = 'Bookmark: ' . sanitize_text_field( $input['properties']['name'][0] );
+			$input['properties']['name'][0] = 'Link: ' . sanitize_text_field( $input['properties']['name'][0] );
 		} else {
 			$sub_title = $input['properties']['content'][0];
 			$sub_title = 40 >= mb_strlen( $sub_title ) ? $sub_title : substr( $sub_title, 0, 40 ) . '&hellip;';
-			$input['properties']['name'][0] = 'Bookmark: ' . $sub_title;
+			$input['properties']['name'][0] = 'Link: ' . $sub_title;
 		}
 	}
 
