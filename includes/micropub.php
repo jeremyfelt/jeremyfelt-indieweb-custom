@@ -17,6 +17,8 @@ add_filter( 'shortnotes_reply_to_name', __NAMESPACE__ . '\filter_shortnotes_repl
 function filter_before_micropub( $input ) {
 	if ( isset( $input['properties']['bookmark-of'] ) ) {
 		remove_filter( 'wp_insert_post_data', '\ShortNotes\PostType\Note\filter_wp_insert_post_data', 10 );
+		$input['properties']['mp-slug'] = substr( wp_generate_uuid4(), 0, 4 ) . time();
+
 		if ( isset( $input['properties']['name'] ) ) {
 			$input['properties']['name'][0] = 'Bookmark: ' . sanitize_text_field( $input['properties']['name'][0] );
 		} else {
