@@ -18,10 +18,10 @@ function filter_before_micropub( $input ) {
 	if ( isset( $input['properties']['bookmark-of'] ) ) {
 		remove_filter( 'wp_insert_post_data', '\ShortNotes\PostType\Note\filter_wp_insert_post_data', 10 );
 		if ( isset( $input['properties']['name'] ) ) {
-			$input['properties']['name'][0] = 'Bookmark: ' . sanitize_text_field( $input['properties']['name'] );
+			$input['properties']['name'][0] = 'Bookmark: ' . sanitize_text_field( $input['properties']['name'][0] );
 		} else {
-			$sub_title = $input['properties']['content'];
-			$sub_title = 40 >= mb_strlen( $input['properties']['content'] ) ? $sub_title : substr( $sub_title, 0, 40 ) . '&hellip;';
+			$sub_title = $input['properties']['content'][0];
+			$sub_title = 40 >= mb_strlen( $sub_title ) ? $sub_title : substr( $sub_title, 0, 40 ) . '&hellip;';
 			$input['properties']['name'][0] = 'Bookmark: ' . $sub_title;
 		}
 	}
