@@ -2,10 +2,31 @@
 
 namespace JIC\Micropub;
 
+add_filter( 'before_micropub', __NAMESPACE__ . '\filter_before_micropub', 10 );
 add_filter( 'micropub_post_type', __NAMESPACE__ . '\filter_micropub_post_type', 10, 2 );
 add_filter( 'micropub_post_content', __NAMESPACE__ . '\filter_micropub_post_content', 0, 2 );
 add_filter( 'get_post_metadata', __NAMESPACE__ . '\filter_reply_to_metadata', 10, 4 );
 add_filter( 'shortnotes_reply_to_name', __NAMESPACE__ . '\filter_shortnotes_reply_to_name', 10, 3 );
+
+/**
+ * Filter the arguments received via a Micropub request.
+ *
+ * @param $input An array of arguments received with a micropub request.
+ * @return array Modified arguments.
+ */
+function filter_before_micropub( $input ) {
+	if ( isset( $input['properties']['bookmark-of'] ) ) {
+		if ( isset( $input['properties']['name'] ) ) {
+			$input['properties']['name'] = 'Bookmark: ' . sanitize_text_field( $input['properties']['name'] );
+		} else {
+			$sub_title = $input['properties']['content'];
+			$sub_title = 40 >= mb_strlen( $input['properties']['content'] ) ? $sub_title : substr( $sub_title, 0, 40 ) . '&hellip;';
+			$input['properties']['name'] = 'Bookmark: ' . $sub_title;
+		}
+	}
+
+	return $input;
+}
 
 /**
  * Filter the post type for content published with a micropub client.
