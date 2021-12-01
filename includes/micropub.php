@@ -11,18 +11,18 @@ add_filter( 'shortnotes_reply_to_name', __NAMESPACE__ . '\filter_shortnotes_repl
 /**
  * Filter the arguments received via a Micropub request.
  *
- * @param $input An array of arguments received with a micropub request.
+ * @param array $input An array of arguments received with a micropub request.
  * @return array Modified arguments.
  */
 function filter_before_micropub( $input ) {
 	if ( isset( $input['properties']['bookmark-of'] ) ) {
 		remove_filter( 'wp_insert_post_data', '\ShortNotes\PostType\Note\filter_wp_insert_post_data', 10 );
 		if ( isset( $input['properties']['name'] ) ) {
-			$input['properties']['name'] = 'Bookmark: ' . sanitize_text_field( $input['properties']['name'] );
+			$input['properties']['name'][0] = 'Bookmark: ' . sanitize_text_field( $input['properties']['name'] );
 		} else {
 			$sub_title = $input['properties']['content'];
 			$sub_title = 40 >= mb_strlen( $input['properties']['content'] ) ? $sub_title : substr( $sub_title, 0, 40 ) . '&hellip;';
-			$input['properties']['name'] = 'Bookmark: ' . $sub_title;
+			$input['properties']['name'][0] = 'Bookmark: ' . $sub_title;
 		}
 	}
 
