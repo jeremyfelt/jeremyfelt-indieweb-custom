@@ -27,6 +27,17 @@ function filter_before_micropub( $input ) {
 			$sub_title = 40 >= mb_strlen( $sub_title ) ? $sub_title : substr( $sub_title, 0, 40 ) . '&hellip;';
 			$input['properties']['name'][0] = 'Link: ' . $sub_title;
 		}
+	} else if ( isset( $input['properties']['in-reply-to'] ) ) {
+		remove_filter( 'wp_insert_post_data', '\ShortNotes\PostType\Note\filter_wp_insert_post_data', 10 );
+		$input['properties']['mp-slug'][0] = substr( wp_generate_uuid4(), 0, 4 ) . time();
+
+		if ( isset( $input['properties']['name'] ) ) {
+			$input['properties']['name'][0] = 'Reply: ' . sanitize_text_field( $input['properties']['name'][0] );
+		} else {
+			$sub_title = $input['properties']['content'][0];
+			$sub_title = 40 >= mb_strlen( $sub_title ) ? $sub_title : substr( $sub_title, 0, 40 ) . '&hellip;';
+			$input['properties']['name'][0] = 'Reply: ' . $sub_title;
+		}
 	}
 
 	return $input;
@@ -134,7 +145,7 @@ function filter_shortnotes_reply_to_name( $reply_to_name, $post, $reply_to_url )
  * @return string The modified note title.
  */
 function filter_shortnotes_formatted_title( $title, $post_data ) {
-	if ( 0 === mb_strpos( $post_data['post_title'], 'Link' ) ) {
+	if ( 0 === mb_strpos( $post_data['post_title'], 'Link' ) || 0 === mb_strpos( $post_data['post_title'], 'Reply' ) ) {
 		return $post_data['post_title'];
 	}
 
