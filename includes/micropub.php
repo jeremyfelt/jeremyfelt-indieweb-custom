@@ -55,7 +55,7 @@ function filter_micropub_post_type( $post_type, $input ) {
 }
 
 /**
- * Filter the post content for content publishedd with a micropub client.
+ * Filter the post content for content published with a micropub client.
  *
  * @param string $content The post content.
  * @param array  $input   An array of input args.
