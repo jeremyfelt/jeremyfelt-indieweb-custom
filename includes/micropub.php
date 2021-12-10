@@ -62,6 +62,11 @@ function filter_micropub_post_type( $post_type, $input ) {
 		return 'shortnote';
 	}
 
+	// Use Shortnotes for notes, or, posts without titles.
+	if ( ! isset( $props['name'] ) && 'h-entry' === $input['type'][0] ) {
+		return 'shortnote';
+	}
+
 	return $post_type;
 }
 
